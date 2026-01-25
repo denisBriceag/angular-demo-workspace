@@ -1,0 +1,90 @@
+@use '../breaking-points' as bp;
+@use 'mixins' as mx;
+
+:root {
+  --mat-sys-display-large: 600 #{mx.rem(40px)} / 150% Onest;
+  --mat-sys-display-large-size: #{mx.rem(40px)};
+  --mat-sys-display-large-weight: 600;
+  --mat-sys-display-large-line-height: 150%;
+  --mat-sys-display-large-tracking: #{mx.letter-spacing(40px, -2)};
+
+  --mat-sys-display-medium: 600 #{mx.rem(32px)} / 150% Onest;
+  --mat-sys-display-medium-size: #{mx.rem(32px)};
+  --mat-sys-display-medium-weight: 600;
+  --mat-sys-display-medium-line-height: 150%;
+  --mat-sys-display-medium-tracking: #{mx.letter-spacing(32px, -2)};
+
+  --mat-sys-display-small: 600 #{mx.rem(24px)} / 150% Onest;
+  --mat-sys-display-small-size: #{mx.rem(24px)};
+  --mat-sys-display-small-weight: 600;
+  --mat-sys-display-small-line-height: 150%;
+  --mat-sys-display-small-tracking: #{mx.letter-spacing(24px, -1)};
+
+  --mat-sys-headline-large: 600 #{mx.rem(20px)} / 150% Onest;
+  --mat-sys-headline-large-size: #{mx.rem(20px)};
+  --mat-sys-headline-large-weight: 600;
+  --mat-sys-headline-large-line-height: 150%;
+  --mat-sys-headline-large-tracking: #{mx.letter-spacing(20px, -1)};
+
+  --mat-sys-headline-medium: 600 #{mx.rem(18px)} / 150% Onest;
+  --mat-sys-headline-medium-size: #{mx.rem(18px)};
+  --mat-sys-headline-medium-weight: 600;
+  --mat-sys-headline-medium-line-height: 150%;
+  --mat-sys-headline-medium-tracking: #{mx.letter-spacing(18px, -1)};
+}
+
+h1 {
+  @include mx.font(40px, 600, 150%, -2);
+
+  @include bp.for-mobile {
+    @include mx.font(32px, 600, 150%, -2);
+
+    --mat-sys-display-large: 600 #{mx.rem(32px)} / 150% Onest;
+    --mat-sys-display-large-size: #{mx.rem(32px)};
+  }
+}
+
+h2 {
+  @include mx.font(32px, 600, 150%, -2);
+
+  @include bp.for-mobile {
+    @include mx.font(28px, 600, 150%, -1);
+
+    --mat-sys-display-medium: 600 #{mx.rem(28px)} / 150% Onest;
+    --mat-sys-display-medium-size: #{mx.rem(28px)};
+    --mat-sys-display-medium-tracking: #{mx.letter-spacing(28px, -1)};
+  }
+}
+
+h3 {
+  @include mx.font(24px, 600, 150%, -1);
+
+  @include bp.for-mobile {
+    @include mx.font(22px, 600, 150%, -1);
+
+    --mat-sys-display-small: 600 #{mx.rem(22px)} / 150% Onest;
+    --mat-sys-display-small-size: #{mx.rem(22px)};
+  }
+}
+
+h4 {
+  @include mx.font(20px, 600, 150%, -1);
+
+  @include bp.for-mobile {
+    @include mx.font(18px, 600, 150%, -1);
+
+    --mat-sys-headline-large: 600 #{mx.rem(18px)} / 150% Onest;
+    --mat-sys-headline-large-size: #{mx.rem(18px)};
+  }
+}
+
+h5 {
+  @include mx.font(18px, 600, 150%, -1);
+
+  @include bp.for-mobile {
+    @include mx.font(16px, 600, 150%, -1);
+
+    --mat-sys-headline-medium: 600 #{mx.rem(16px)} / 150% Onest;
+    --mat-sys-headline-medium-size: #{mx.rem(16px)};
+  }
+}

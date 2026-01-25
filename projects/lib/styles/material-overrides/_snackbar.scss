@@ -1,0 +1,104 @@
+@use '@angular/material' as mat;
+@use '../breaking-points' as bp;
+
+.mdc-snackbar {
+  .mat-mdc-snackbar-surface {
+    width: 350px;
+    position: relative;
+
+    @include bp.for-mobile {
+      width: 100%;
+    }
+
+    padding-right: 0;
+
+    .mat-mdc-snack-bar-label {
+      padding: 12px;
+    }
+  }
+
+  .mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+    border-radius: 8px;
+    color: transparent;
+    background-color: transparent;
+    min-width: inherit;
+    max-width: inherit;
+  }
+}
+
+.mat-mdc-snack-bar-container.custom-snackbar-animation {
+  animation: snackIn 140ms ease-in forwards;
+
+  &[mat-exit] {
+    animation: snackOut 140ms ease-in forwards;
+  }
+}
+
+.custom-snackbar-class {
+  &--info {
+    .mat-mdc-snackbar-surface {
+      color: var(--mat-sys-on-surface) !important;
+      background-color: var(--mat-sys-surface-container-highest) !important;
+
+      [matIconButton] {
+        @include mat.icon-button-overrides(
+            (
+              icon-color: var(--mat-sys-on-surface),
+            )
+        );
+      }
+    }
+  }
+
+  &--success {
+    .mat-mdc-snackbar-surface {
+      color: var(--mat-sys-on-secondary-container) !important;
+      background-color: var(--mat-sys-secondary-container) !important;
+
+      [matIconButton] {
+        @include mat.icon-button-overrides(
+            (
+              icon-color: var(--mat-sys-on-secondary-container),
+            )
+        );
+      }
+    }
+  }
+
+  &--error {
+    .mat-mdc-snackbar-surface {
+      color: var(--mat-sys-on-error-container) !important;
+      background-color: var(--mat-sys-error-container) !important;
+
+      [matIconButton] {
+        @include mat.icon-button-overrides(
+            (
+              icon-color: var(--mat-sys-on-error-container),
+            )
+        );
+      }
+    }
+  }
+}
+
+@keyframes snackIn {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes snackOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}

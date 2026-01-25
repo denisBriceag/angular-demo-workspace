@@ -5,6 +5,166 @@
     "packageManager": "pnpm"
   },
   "newProjectRoot": "projects",
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss",
+      "changeDetection": "OnPush",
+      "addTypeToClassName": true,
+      "standalone": true
+    },
+    "@schematics/angular:directive": {
+      "addTypeToClassName": true,
+      "standalone": true
+    },
+    "@schematics/angular:pipe": {
+      "standalone": true,
+      "typeSeparator": "."
+    },
+    "@schematics/angular:service": {
+      "addTypeToClassName": true
+    }
+  },
   "projects": {
+    "csr-demo": {
+      "projectType": "application",
+      "root": "projects/csr-demo",
+      "sourceRoot": "projects/csr-demo/src",
+      "prefix": "csr",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/csr-demo/src/main.ts",
+            "tsConfig": "projects/csr-demo/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/csr-demo/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/lib/assets",
+                "output": "/assets"
+              }
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/lib/styles"]
+            },
+            "styles": ["projects/lib/styles/index.scss", "projects/csr-demo/src/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "csr-demo:build:production"
+            },
+            "development": {
+              "buildTarget": "csr-demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    },
+    "ssr-demo": {
+      "projectType": "application",
+      "root": "projects/ssr-demo",
+      "sourceRoot": "projects/ssr-demo/src",
+      "prefix": "ssr",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/ssr-demo/src/main.ts",
+            "tsConfig": "projects/ssr-demo/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/ssr-demo/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/lib/assets",
+                "output": "/assets"
+              }
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/lib/styles"]
+            },
+            "styles": ["projects/lib/styles/index.scss", "projects/ssr-demo/src/styles.css"],
+            "server": "projects/ssr-demo/src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "projects/ssr-demo/src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ssr-demo:build:production"
+            },
+            "development": {
+              "buildTarget": "ssr-demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,13 @@
+@use 'mixins' as mx;
+
+.text-caption-md {
+  @include mx.font(12px, 400, 150%, 0);
+}
+
+.text-caption-md-500 {
+  @include mx.font(12px, 500, 150%, 0);
+}
+
+.text-caption-small {
+  @include mx.font(10px, 400, 150%, 0);
+}

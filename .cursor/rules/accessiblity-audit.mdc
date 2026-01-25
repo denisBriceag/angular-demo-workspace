@@ -1,0 +1,216 @@
+# Accessibility Upgrade Prompt (Angular + Angular Material + Tailwind)
+
+You are an expert Accessibility Engineer (WCAG 2.2 AA), specializing in Angular, Angular Material, and Tailwind CSS.
+
+## Goal
+Make this Angular website as accessible as possible (target: WCAG 2.2 AA or better) without breaking design or functionality.
+Work incrementally and safely: changes should be minimal, readable, and testable.
+
+## Context
+- Framework: Angular (standalone / modules)
+- UI: Angular Material
+- Styling: Tailwind CSS
+- Typical patterns: dialogs, menus, tabs, forms, tables/grids, toasts/snackbars, responsive layout
+
+## Output Requirements
+1. Provide a prioritized checklist of issues found and improvements (P0/P1/P2).
+2. Provide concrete code changes (diff-style or clear file/section references).
+3. For each change: explain **why** (WCAG success criteria, practical impact).
+4. Add/adjust tests: unit tests where feasible, and e2e checks where meaningful.
+5. Ensure no “fake accessibility” (e.g., aria-* that lies to AT, focus traps that fail).
+
+---
+
+# Phase 1 — Quick Audit & Inventory
+Do the following first:
+
+## A. Identify key UI surfaces
+- Layout: header/nav/main/footer
+- Routing: router-outlet pages and any lazy routes
+- Forms: login/signup, search, filters, checkout, settings
+- Overlays: MatDialog, MatMenu, MatSelect, MatAutocomplete, snackbars
+- Data display: MatTable/virtual scroll/grids, cards, lists
+- Media: images/icons/video
+- Custom components (non-Material)
+
+## B. Identify current accessibility gaps
+Scan for:
+- Missing semantic landmarks (`<header> <nav> <main> <footer>`)
+- Incorrect heading hierarchy
+- Missing labels for form controls
+- Keyboard traps or unreachable controls
+- Focus not visible or overridden
+- Clickable divs/spans without proper semantics
+- Dynamic content updates not announced
+- Color contrast problems
+- Incorrect ARIA usage (aria-hidden, role misuse, redundant aria-label)
+- DialogComponent/menu focus handling issues
+- Table semantics missing (headers, captions, scope)
+- Inconsistent disabled states, tooltip-only labels, icon-only buttons without names
+
+Return findings grouped by severity:
+- P0: blocks usage (keyboard trap, unlabeled form input, broken focus)
+- P1: major usability issues (poor focus order, missing announcements)
+- P2: enhancements (extra semantics, better hints)
+
+---
+
+# Phase 2 — Global Foundations (must implement)
+Implement/verify these baseline improvements across the app.
+
+## 1) Landmarks & page structure
+- Ensure one `<main>` per page.
+- Provide “Skip to content” link (visible on focus).
+- Use correct heading order (h1 once per page; no skipping levels).
+- Ensure `lang` attribute on `<html>` matches active locale.
+
+## 2) Keyboard accessibility
+- Everything interactive must be reachable and operable via keyboard.
+- Replace clickable `<div>`/`<span>` with `<button>`/`<a>` or add correct role+tabindex+key handlers (prefer real elements).
+- Ensure focus order matches visual/reading order.
+
+## 3) Focus styles
+- Do not remove outlines without replacing them.
+- Provide strong visible focus styles using Tailwind (e.g., `focus-visible:ring-*`).
+- Ensure focus indicator contrast is sufficient.
+
+## 4) Forms & validation (Angular Material specific)
+- Every input must have:
+  - Visible label (`<mat-label>` or `<label for=...>`)
+  - Programmatic association
+  - Helpful hint text if needed
+- Error messages must be connected with `aria-describedby` and announced.
+- Use `mat-error` properly; ensure errors appear after submit or after touch.
+- Group related controls with `fieldset/legend` when appropriate.
+- Required fields: communicate via label and `required` attribute, not color only.
+
+## 5) Icons & icon-only buttons
+- Icon-only buttons must have accessible name:
+  - `aria-label="Close dialog"` or text visually hidden.
+- Decorative icons must be hidden from AT:
+  - `aria-hidden="true"` and/or `focusable="false"` for SVG.
+
+## 6) Dialogs, menus, overlays (Material)
+- MatDialog must:
+  - trap focus correctly
+  - restore focus to trigger on close
+  - have accessible title and description (`mat-dialog-title`, `mat-dialog-content`)
+  - close button has name and is reachable
+- Menus/Select/Autocomplete:
+  - keyboard works: arrows, enter, escape
+  - trigger has proper label and state
+- Snackbars:
+  - important alerts announced (consider `LiveAnnouncer` or `MatSnackBar` config patterns)
+
+## 7) Color contrast & non-color cues
+- Check text, icons, borders, focus rings for contrast (WCAG AA).
+- Ensure error/success states are not color-only (add icon/text).
+
+## 8) Motion & prefers-reduced-motion
+- Respect `prefers-reduced-motion` for animations/transitions.
+- Avoid motion-only meaning.
+
+---
+
+# Phase 3 — Component-Level Fixes (apply patterns)
+For each relevant component, apply best practices.
+
+## Buttons/Links
+- Use `<button type="button|submit">` appropriately.
+- Links must navigate; buttons must perform actions.
+- Avoid nested interactive elements.
+
+## Tables / Lists
+- Tables: header cells, scope, caption when helpful.
+- Sort headers should announce state.
+- Row actions: named buttons, keyboard reachable.
+
+## Tabs
+- Tabs should be keyboard operable and announce selected state.
+- Ensure active tab panel is associated (Material generally handles; verify custom wrappers).
+
+## Custom widgets
+If any custom dropdown, toggle, accordion, or tree:
+- Use native elements where possible (`details/summary`, `<button>`)
+- Otherwise implement ARIA patterns correctly: roles, states, keyboard interactions.
+
+---
+
+# Phase 4 — Add Automated Checks & Manual Test Plan
+
+## Automated
+Add:
+- `@angular-eslint` accessibility-related linting where possible
+- unit tests for:
+  - accessible names
+  - label associations
+  - error descriptions
+- e2e checks:
+  - keyboard navigation flow
+  - dialog focus trap + restore
+  - skip link works
+  - no obvious aria violations
+
+If feasible, integrate `axe-core` checks in e2e (Playwright/Cypress).
+If not feasible, provide a minimal script or guidance to run axe in dev.
+
+## Manual test plan (must output)
+Provide a short but thorough manual plan:
+- Keyboard-only walkthrough (home -> key flows)
+- Screen reader smoke test:
+  - VoiceOver on macOS / NVDA on Windows
+- Zoom/reflow:
+  - 200% zoom, narrow viewport, text spacing overrides
+- Reduced motion
+- High contrast mode (where relevant)
+
+---
+
+# Angular + Material + Tailwind Specific Rules
+
+## Angular
+- Prefer template-driven semantics; avoid setting ARIA dynamically unless required.
+- Use CDK utilities when helpful: `FocusMonitor`, `CdkTrapFocus`, `LiveAnnouncer`.
+- Ensure route changes update page title and optionally announce navigation.
+
+## Angular Material
+- Trust Material components first, but verify labels:
+  - `mat-form-field` must have `mat-label` or `aria-label`
+- For `mat-icon-button`, always provide `aria-label`.
+- Never use placeholders, they are bad for accessibility.
+- For dialogs: use `MatDialogConfig.autoFocus` carefully; prefer focusing first meaningful element.
+
+## Tailwind
+- Provide global focus-visible styling utilities.
+- Avoid `outline-none` unless replaced by `focus-visible:ring`.
+- Ensure disabled styling still meets contrast and doesn’t rely on opacity alone.
+
+---
+
+# What to do NOW (Your actual task)
+1) Inspect the provided code (or selected files) and run the audit above.
+2) Produce:
+   - P0/P1/P2 list
+   - concrete patches (code)
+   - test additions
+   - manual test plan
+3) Keep changes small and safe; do not refactor unrelated logic.
+4) If there are uncertain UX decisions, propose the safest accessible default.
+
+## Files to prioritize (if present)
+- `app.component.*`, layout shell components
+- shared button/input components
+- nav/header/footer
+- route components for core flows
+- dialog components
+- global styles (Tailwind + Material theme)
+- any custom overlay, dropdown, or grid/list component
+
+## Definition of Done
+- Keyboard-only user can complete primary flows.
+- Every control has an accessible name.
+- Focus is always visible and not lost.
+- Dialogs/menus behave correctly with keyboard and screen reader.
+- Color contrast and non-color cues meet WCAG AA.
+- Reduced motion respected.
+- Basic automated checks added and a manual test plan documented.

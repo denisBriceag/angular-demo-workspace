@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+@use '../breaking-points' as bp;
+
+.cdk-overlay-pane.custom-dialog {
+  min-width: 588px !important;
+  max-width: 588px !important;
+
+  @include bp.for-mobile {
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+.custom-dialog {
+  margin: 0.5rem;
+
+  @include mat.dialog-overrides((
+    container-shape: 16px,
+  ));
+}
+
+.cdk-overlay-backdrop {
+  backdrop-filter: blur(6px);
+}

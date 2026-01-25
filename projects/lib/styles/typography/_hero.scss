@@ -1,0 +1,18 @@
+@use '../breaking-points' as bp;
+@use 'mixins' as mx;
+
+.text-hero-lg {
+  @include mx.font(56px, 600, 140%, -2);
+
+  @include bp.for-mobile {
+    @include mx.font(48px, 600, 140%, -2);
+  }
+}
+
+.text-hero-md {
+  @include mx.font(48px, 600, 140%, -2);
+
+  @include bp.for-mobile {
+    @include mx.font(40px, 600, 140%, -2);
+  }
+}

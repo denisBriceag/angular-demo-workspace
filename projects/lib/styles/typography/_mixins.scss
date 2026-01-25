@@ -1,0 +1,19 @@
+@use 'sass:math';
+
+@function letter-spacing($size, $letter-spacing) {
+  @return calc($size * ($letter-spacing / 100));
+}
+
+@function rem($size, $base: 16px) {
+  @return math.div($size, $base) * 1rem;
+}
+
+@mixin font($size, $weight, $line-height, $letter-spacing) {
+  font-family: "Onest", serif;
+  font-style: normal;
+  font-size: rem($size);
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: letter-spacing($size, $letter-spacing);
+}
+

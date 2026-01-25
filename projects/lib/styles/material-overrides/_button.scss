@@ -1,0 +1,75 @@
+@use '@angular/material' as mat;
+
+button,
+a {
+  &[matButton] {
+    @include mat.button-overrides(
+        (
+          filled-container-shape: 8px,
+          tonal-container-shape: 8px,
+          outlined-container-shape: 8px,
+          text-container-shape: 8px,
+          protected-container-shape: 8px,
+
+          filled-horizontal-padding: 20px,
+          outlined-horizontal-padding: 20px,
+          text-horizontal-padding: 20px,
+          text-with-icon-horizontal-padding: 20px,
+          protected-horizontal-padding: 20px,
+          tonal-horizontal-padding: 20px,
+
+          tonal-container-height: 36px,
+        )
+    );
+  }
+
+  &[matFab] {
+    @include mat.fab-overrides(
+        (
+          container-shape: 8px,
+          extended-container-height: 48px,
+          small-container-shape: 48px,
+        )
+    );
+  }
+
+  &[matIconButton] {
+    @include mat.icon-button-overrides(
+        (
+          container-shape: 8px,
+        )
+    );
+
+    .mat-icon {
+      margin-bottom: 3px;
+    }
+  }
+
+  .mdc-button__label {
+    margin-bottom: 3px;
+
+    &:has(mat-spinner) {
+      display: flex;
+      place-content: center;
+      gap: 8px;
+      margin-bottom: 0;
+    }
+  }
+
+  .mat-mdc-button-disabled {
+    .mat-mdc-button-touch-target {
+      cursor: not-allowed;
+    }
+
+    .mdc-button__label {
+      &:has(mat-spinner) {
+        .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+          stroke: var(
+              --mat-form-field-disabled-trailing-icon-color,
+              color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent)
+          );
+        }
+      }
+    }
+  }
+}

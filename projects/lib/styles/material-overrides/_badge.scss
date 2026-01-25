@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+.mat-badge-large .mat-badge-content {
+  @include mat.badge-overrides((
+    background-color: var(--mat-sys-error),
+    large-size-container-size: 20px,
+  ));
+
+  --mat-badge-large-size-line-height: 20px
+}
