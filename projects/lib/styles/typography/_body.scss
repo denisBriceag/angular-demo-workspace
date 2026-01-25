@@ -1,0 +1,25 @@
+@use 'mixins' as mx;
+
+.text-body-lg {
+  @include mx.font(18px, 400, 150%, 0);
+}
+
+.text-body-lg-500 {
+  @include mx.font(18px, 500, 150%, 0);
+}
+
+.text-body-default {
+  @include mx.font(16px, 400, 140%, 0);
+}
+
+.text-body-default-500 {
+  @include mx.font(16px, 500, 140%, 0);
+}
+
+.text-body-sm {
+  @include mx.font(14px, 400, 140%, 0);
+}
+
+.text-body-sm-500 {
+  @include mx.font(14px, 500, 140%, 0);
+}

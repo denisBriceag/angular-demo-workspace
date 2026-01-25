@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+
+.notification {
+  width: 350px;
+  border-radius: 8px;
+  padding: 12px;
+  position: relative;
+
+  &__info {
+    color: var(--mat-sys-on-surface);
+    background-color: var(--mat-sys-surface-container-highest);
+  }
+
+  &__error {
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+
+  &__success {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+
+  &__container {
+    display: flex;
+    gap: 10px;
+
+    mat-icon {
+      display: inline-table;
+    }
+  }
+
+  &__close {
+    @include mat.icon-button-overrides(
+      (
+        container-shape: 0.5rem,
+        icon-size: 1rem,
+        touch-target-size: 1.5rem,
+      )
+    );
+
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+
+    i {
+      margin-bottom: 0;
+      height: 1rem;
+      width: 1rem;
+      font-size: 1rem;
+    }
+  }
+}

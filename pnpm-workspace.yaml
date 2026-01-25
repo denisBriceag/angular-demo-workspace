@@ -1,0 +1,12 @@
+packages:
+  - .
+  - projects/csr-demo
+  - projects/ssr-demo
+  - projects/lib
+
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - lmdb
+  - msgpackr-extract

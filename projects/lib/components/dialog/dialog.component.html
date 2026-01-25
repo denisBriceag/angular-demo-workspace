@@ -1,0 +1,32 @@
+<div class="dialog relative ps-16 pt-12 pb-12 pe-10">
+  <button
+    matIconButton
+    class="dialog__close text-body-default-500"
+    aria-label="'Close notification'"
+    [mat-dialog-close]="false"
+  >
+    <i class="mat-icon">close</i>
+  </button>
+
+  <h3 [attr.aria-label]="data.title">{{ data.title }}</h3>
+
+  @if (data.message) {
+    <p [attr.aria-label]="data.message" class="dialog__content text-body-default pt-12 max-h">
+        {{ data.message }}
+    </p>
+  }
+
+  <ng-container #template />
+
+  <div class="flex flex-col justify-center gap-4 pt-12 lg:flex-row lg:justify-end">
+    <button [attr.aria-label]="data.cancelLabel" matButton="outlined" [mat-dialog-close]="false">{{ data.cancelLabel }}</button>
+    <button
+      matButton="filled"
+      [attr.aria-label]="data.confirmLabel"
+      [mat-dialog-close]="true"
+      [ngClass]="{ 'dialog__critical-confirm': data.isCritical }"
+    >
+      {{ data.confirmLabel }}
+    </button>
+  </div>
+</div>
